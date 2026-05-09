@@ -10,27 +10,27 @@ set -euo pipefail
 
 export PATH=$PATH:/home/apolonio/sratoolkit.3.2.1-alma_linux64/bin
 
-# ── Configuration ─────────────────────────────────────────────────────────────
+#Set Up
 METADATA="/home/apolonio/orcd/scratch/20_440/Metadata.csv"
 BASE_DIR="/home/apolonio/orcd/scratch/20_440"
 
-# Filter flags — override at submission time:
+# Flags
 #   sbatch 02_download.sh AD ALL
 #   sbatch 02_download.sh CB Metatranscriptome
 #   sbatch 02_download.sh ALL ALL
 DATASET="${1:-ALL}"     # AD | CB | ALL
 DATA_TYPE="${2:-ALL}"   # Metagenome | Metatranscriptome | ALL
 
-echo "===== Download parameters ====="
+echo "Download parameters"
 echo "  Dataset filter:   $DATASET"
 echo "  Data type filter: $DATA_TYPE"
 echo "  Metadata file:    $METADATA"
 echo "  Base directory:   $BASE_DIR"
-echo "==============================="
+echo ""
 
 mkdir -p "${BASE_DIR}/sra_tmp"
 
-# ── Download function ─────────────────────────────────────────────────────────
+#Downlaod function
 download_run() {
     local srr="$1"
     local name="$2"
@@ -56,14 +56,14 @@ download_run() {
         --outdir "$sample_dir" \
         "${BASE_DIR}/sra_tmp/${srr}/${srr}.sra"
 
-    # Rename SRR accession → sample name
+    # Rename SRR accession
     for suffix in "_1.fastq" "_2.fastq" ".fastq"; do
         [ -f "${sample_dir}/${srr}${suffix}" ] && \
             mv "${sample_dir}/${srr}${suffix}" \
                "${sample_dir}/${name}${suffix}"
     done
 
-    # Compress
+    # Compress if needed (will need to edit some script slater on to account for this) 
     #pigz -p 8 "${sample_dir}"/*.fastq 2>/dev/null || true
 
     # Clean prefetch cache
@@ -72,9 +72,9 @@ download_run() {
     echo "  Done: ${dataset}/${name}"
 }
 
-# ── Read metadata and loop ────────────────────────────────────────────────────
+# Loop from Metdata
 echo ""
-echo "===== Starting downloads ====="
+echo "Starting downloads "
 
 tail -n +2 "$METADATA" | while IFS=$'\t' read -r bioproject srr type name title env lat lon dataset; do
 
@@ -102,11 +102,5 @@ tail -n +2 "$METADATA" | while IFS=$'\t' read -r bioproject srr type name title 
 done
 
 echo ""
-echo "===== Download complete ====="
+echo "Download complete "
 echo ""
-echo "Submission examples for future reference:"
-echo "  sbatch 02_download.sh AD  ALL               # all Atacama"
-echo "  sbatch 02_download.sh CB  ALL               # all Chesapeake/Delaware"
-echo "  sbatch 02_download.sh AD  Metagenome        # Atacama DNA only"
-echo "  sbatch 02_download.sh CB  Metatranscriptome # CB RNA only"
-echo "  sbatch 02_download.sh ALL ALL               # everything"
