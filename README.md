@@ -271,12 +271,12 @@ python 11_plot_figures.py
 | 05 | `05_rnafold.sh` | Bash + Python | RNAfold secondary structure |
 | 05b | `05b_bam.sh` | Bash | Bowtie2 alignment → BAM |
 | 06 | `06_intarna.sh` | Bash + Python | IntaRNA interaction prediction |
-| 07 | `07_feature_matrix.sh` | Bash | Feature matrix orchestration |
+| 07 | `07_feature_matrix.sh` | Bash | Feature matrix  |
 | 07 | `07_build_feature_matrix.py` | Python | Feature matrix construction |
-| 08 | `08_run_analysis.sh` | Bash | Analysis orchestration |
+| 08 | `08_run_analysis.sh` | Bash | Random Forest snalysis  |
 | 08 | `08_srna_analysis.py` | Python | DE, RF, correlation analysis |
 | 08b | `08b_per_replicate_tpm.sh` | Bash + Python | Per-replicate StringTie TPM |
 | 09 | `09_gene_to_uniref.sh` | Bash | DIAMOND blastp → UniRef90 |
-| 10 | `10_table_generation.sh` | Bash | Table generation orchestration |
-| 10 | `10_table_generation.py` | Python | Master table construction |
-| 11 | `11_plot_figures.py` | Python | Publication figure generation |
+| 10 | `10_table_generation.sh` | Bash | Table generation  |
+| 10 | `10_table_generation.py` | Python | Master table generation |
+| 11 | `11_plot_figures.py` | Python | Figure generation |
